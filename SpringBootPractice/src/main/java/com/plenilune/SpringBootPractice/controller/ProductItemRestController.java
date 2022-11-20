@@ -7,6 +7,8 @@ import com.plenilune.SpringBootPractice.service.ProductItemService;
 import com.plenilune.SpringBootPractice.vo.ErrorResponse;
 import com.plenilune.SpringBootPractice.vo.ProductItem;
 import com.plenilune.SpringBootPractice.vo.ResponseMessage;
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,6 +23,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/api")
+@Api(value = "ProductItem", tags = {"ProductItem"})
 public class ProductItemRestController {
 
     private static Logger logger = LoggerFactory.getLogger(ProductItemRestController.class);
@@ -38,6 +41,7 @@ public class ProductItemRestController {
      * @return
      * @throws ProductItemException
      */
+    @ApiOperation(value = "get a single user by id")
     @RequestMapping(value="/product/{id}", method=RequestMethod.GET)
     public ResponseEntity<?> getProductItem(@PathVariable("id") long id) throws ProductItemException {
         ProductItem productItem = productItemService.findById(id);
@@ -47,6 +51,11 @@ public class ProductItemRestController {
         return new ResponseEntity<ProductItem>(productItem, HttpStatus.OK);
     }
 
+    /**
+     * get all productItems
+     * @return
+     */
+    @ApiOperation(value = "get all productItems")
     @RequestMapping(value = "/products", method = RequestMethod.GET)
     public ResponseEntity<?> getAllProductItems() {
         List<ProductItem> productItemList = productItemService.findAllProductItems();
@@ -59,6 +68,7 @@ public class ProductItemRestController {
      * @param ucBuilder
      * @return
      */
+    @ApiOperation(value = "create a productItem")
     @RequestMapping(value="/product", method=RequestMethod.POST, consumes = "application/json")
     public ResponseEntity<ResponseMessage> createProductItem(@Validated @RequestBody ProductItem productItem,
                                                              UriComponentsBuilder ucBuilder) {
@@ -78,6 +88,7 @@ public class ProductItemRestController {
      * @param newProductItem
      * @return
      */
+    @ApiOperation(value = "update a productItem")
     @RequestMapping(value = "/product/{id}", method = RequestMethod.PUT)
     public ResponseEntity<ProductItem> updateProductItem(@PathVariable("id") long id, @RequestBody ProductItem newProductItem) {
 
@@ -95,6 +106,12 @@ public class ProductItemRestController {
         return new ResponseEntity<ProductItem>(productItem, HttpStatus.OK);
     }
 
+    /**
+     * delete a productItem by id
+     * @param id
+     * @return
+     */
+    //@ApiOperation(value = "delete a productItem by id")
     @RequestMapping(value = "/user/{id}", method = RequestMethod.DELETE)
     public ResponseEntity<ResponseMessage> deleteProductItem(@PathVariable("id") long id) {
 
@@ -119,7 +136,7 @@ public class ProductItemRestController {
 
     @ExceptionHandler(ProductItemNotFoundException.class)
     public ResponseEntity<ErrorResponse> exceptionHandlerProductItemNotFound(Exception ex) {
-        logger.error("Cannot found product");
+        logger.error("Cannot find product");
         ErrorResponse error = new ErrorResponse();
         error.setErrorCode(HttpStatus.NOT_FOUND.value());
         error.setMessage(ex.getMessage());
