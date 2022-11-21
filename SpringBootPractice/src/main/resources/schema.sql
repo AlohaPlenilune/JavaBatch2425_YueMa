@@ -1,8 +1,9 @@
-create table IF NOT EXISTS productItem
+DROP TABLE IF EXISTS productItem;
+CREATE TABLE productItem
 (
-    id integer not null auto_increment,
-    name varchar(255) not null,
-    price double not null,
-    quantity integer not null,
+    id INTEGER NOT NULL auto_increment,
+    name VARCHAR(255) not null,
+    price INTEGER not null,
+    quantity INTEGER not null,
     primary key(id)
 );
