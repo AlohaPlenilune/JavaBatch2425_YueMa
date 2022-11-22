@@ -3,7 +3,7 @@ package com.plenilune.SpringBootPractice.entity;
 import javax.persistence.*;
 
 @Entity
-@Table
+@Table(name="productitem")
 public class ProductItemEntity {
     public ProductItemEntity() {
 
